@@ -17,6 +17,8 @@ using AutoMapper;
 using HotelListingNew.Configurations;
 using HotelListingNew.Repository;
 using HotelListingNew.IRepository;
+using Microsoft.AspNetCore.Identity;
+using HotelListingNew.Services;
 
 namespace HotelListingNew
 {
@@ -36,6 +38,10 @@ namespace HotelListingNew
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
 
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+
             services.AddCors(o =>
             {
                 o.AddPolicy("AllowAll", builder =>
@@ -50,6 +56,8 @@ namespace HotelListingNew
             services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IAuthManager, AuthManager>();
 
             services.AddSwaggerGen(c =>
             {
@@ -76,6 +84,7 @@ namespace HotelListingNew
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

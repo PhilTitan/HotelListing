@@ -2,6 +2,7 @@
 using HotelListingNew.Data;
 using HotelListingNew.IRepository;
 using HotelListingNew.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,7 @@ namespace HotelListingNew.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
